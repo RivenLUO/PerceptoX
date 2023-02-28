@@ -44,9 +44,9 @@ class ComparisonHyperModel(kt.HyperModel):
         img_b = data_augmentation(img_b)
 
         # Mean centered due to VGG19 was trained on mean-centered ImageNet (B:103.939,G:116.779,R:223.68)
-        rgb_mean_Imagenet = np.array([103.939, 116.779, 123.68])
-        img_a -= rgb_mean_Imagenet
-        img_b -= rgb_mean_Imagenet
+        bgr_mean_Imagenet = np.array([103.939, 116.779, 123.68])
+        img_a -= bgr_mean_Imagenet
+        img_b -= bgr_mean_Imagenet
 
         # Feature extraction; note unfreezing conv top is at risk of overfitting
         #   Extracting features from VGG19 pretrained with 'imagenet'
