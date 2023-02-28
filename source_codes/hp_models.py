@@ -26,7 +26,6 @@ class ComparisonHyperModel(kt.HyperModel):
             ]
         )
 
-        # feature extractor
         global x
 
         img_size = 224
@@ -60,7 +59,7 @@ class ComparisonHyperModel(kt.HyperModel):
 
         # Top identifier tuning
         #    convblock(convlayer + dropout)
-        num_convblock = hp.Int(name="num_convblock", min_value=0, max_value=4, step=1)
+        num_convblock = hp.Int(name="num_convblock", min_value=0, max_value=3, step=1)
         for i in range(num_convblock):
             x = layers.Conv2D(
                 filters=hp.Int(name=f'filters_convblock_{i}', min_value=128, max_value=512, step=128),
@@ -74,7 +73,7 @@ class ComparisonHyperModel(kt.HyperModel):
         #   densely connected layers
         num_dc_layer = hp.Int(name="num_convblock", min_value=0, max_value=2, step=1)
         for i in range(num_dc_layer):
-            x = layers.Dense(units=hp.Int(name="num_dc_layer", min_value=0, max_value=3, step=1))(x)
+            x = layers.Dense(units=hp.Int(name=f'units_dc_layer_{i}', min_value=128, max_value=512, step=64))(x)
 
         outputs = layers.Dense(self.num_classes, activation="softmax", name="Final_dense")(x)
 
@@ -97,7 +96,7 @@ class ComparisonHyperModel(kt.HyperModel):
 
 
 def get_best_epoch(hp, x_train, y_train, x_val, y_val):
-    model = ComparisonModelMLP(hp)
+    model = ComparisonHyperModel(hp)
     callbacks = [
         keras.callbacks.EarlyStopping(
             monitor="val_loss", mode="min", patience=10)

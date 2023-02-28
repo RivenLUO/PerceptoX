@@ -5,7 +5,7 @@ import numpy as np
 import hp_models
 
 # data preparation
-folder_dir = r"E:\thesis MSc Geography\PerceptoX\data\datasets\train_data"
+folder_dir = r"D:\Zhewen\PerceptoX\data\datasets\train_data"
 x_left_training = np.load(os.path.join(folder_dir, "train_left_duel_1.npy"), allow_pickle=True)
 x_right_training = np.load(os.path.join(folder_dir, "train_right_duel_1.npy"), allow_pickle=True)
 y_training = np.load(os.path.join(folder_dir, "train_label_duel_1.npy"), allow_pickle=True)
@@ -20,14 +20,14 @@ y_train, y_val = y_training[0:400], y_training[400:500]
 
 hypermodel = hp_models.ComparisonHyperModel(num_classes=2)
 
-save_dir = r"E:\thesis MSc Geography\PerceptoX\results\hp_results"
+save_dir = r"D:\Zhewen\PerceptoX\results"
 
 tuner = kt.BayesianOptimization(
     hypermodel,
-    objective=["val_accuracy", "val_loss"],
+    objective=["val_accuracy"],
     max_trials=100,
     executions_per_trial=2,
-    directory=save_dir,
+    directory=os.path.join(save_dir, "hp_results_first_500_samples_2"),
     overwrite=True,
 )
 
