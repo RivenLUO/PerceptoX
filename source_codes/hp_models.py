@@ -7,6 +7,7 @@ from keras import layers, optimizers
 from keras.applications import VGG19, vgg19
 from keras.regularizers import l1_l2
 from models import vgg19_feature_extractor
+import numpy as np
 
 
 class ComparisonHyperModel(kt.HyperModel):
@@ -41,6 +42,11 @@ class ComparisonHyperModel(kt.HyperModel):
         # Data augmentation
         img_a = data_augmentation(img_a)
         img_b = data_augmentation(img_b)
+
+        # Mean centered due to VGG19 was trained on mean-centered ImageNet (B:103.939,G:116.779,R:223.68)
+        rgb_mean_Imagenet = np.array([103.939, 116.779, 123.68])
+        img_a -= rgb_mean_Imagenet
+        img_b -= rgb_mean_Imagenet
 
         # Feature extraction; note unfreezing conv top is at risk of overfitting
         #   Extracting features from VGG19 pretrained with 'imagenet'

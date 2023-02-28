@@ -27,21 +27,25 @@ tuner = kt.BayesianOptimization(
     objective=["val_accuracy"],
     max_trials=100,
     executions_per_trial=2,
-    directory=os.path.join(save_dir, "hp_results_first_500_samples_2"),
+    directory=os.path.join(save_dir, "hp_results_first_500_samples_3"),
     overwrite=True,
 )
 
 callbacks = [keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)]
 
-search_history = tuner.search(
-    x_train,
-    y_train,
-    batch_size=8,
-    epochs=50,
-    validation_data=(x_val, y_val),
-    callbacks=callbacks,
-    verbose=2,
-)
+try:
+    search_history = tuner.search(
+        x_train,
+        y_train,
+        batch_size=8,
+        epochs=50,
+        validation_data=(x_val, y_val),
+        callbacks=callbacks,
+        verbose=2,
+    )
+except RuntimeError:
+    # Skip the current trial and move to the next one
+    print("RuntimeError: Number of consecutive failures exceeded the limit of 3.")
 
 top_n = 4
 best_hps = tuner.get_best_hyperparameters(top_n)
