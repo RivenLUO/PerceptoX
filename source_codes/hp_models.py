@@ -1,16 +1,11 @@
-"""
-"""
-
 import keras_tuner as kt
 import keras
 from keras import layers, optimizers
 from keras.applications import VGG19, vgg19
 from keras.regularizers import l1_l2
-from models import vgg19_feature_extractor
-import numpy as np
 
 
-class ComparisonHyperModel(kt.HyperModel):
+class SiameseHyperModelVgg19(kt.HyperModel):
     """
 
     """
@@ -18,6 +13,11 @@ class ComparisonHyperModel(kt.HyperModel):
         self.num_classes = num_classes
 
     def build(self, hp):
+        """
+
+        :param hp:
+        :return: hyperparameter-tuning model
+        """
         # data augmentation
         data_augmentation = keras.Sequential(
             [
@@ -95,28 +95,3 @@ class ComparisonHyperModel(kt.HyperModel):
 
         return hp_model
 
-
-def get_best_epoch(hp, x_train, y_train, x_val, y_val):
-    model = ComparisonHyperModel(hp)
-    callbacks = [
-        keras.callbacks.EarlyStopping(
-            monitor="val_loss", mode="min", patience=10)
-    ]
-    history = model.fit(
-        x_train, y_train,
-        validation_data=(x_val, y_val),
-        epochs=100,
-        batch_size=8,
-        callbacks=callbacks)
-    val_loss_per_epoch = history.history["val_loss"]
-    best_epoch = val_loss_per_epoch.index(min(val_loss_per_epoch)) + 1
-    print(f"Best epoch: {best_epoch}")
-    return best_epoch
-
-
-def get_best_trained_model(hp, model, x_train, y_train):
-    best_epoch = get_best_epoch(hp)
-    model.fit(
-        x_train, y_train,
-        batch_size=8, epochs=int(best_epoch * 1.2))
-    return model

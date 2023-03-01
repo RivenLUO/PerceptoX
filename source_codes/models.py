@@ -6,7 +6,7 @@ from keras import layers, optimizers
 from keras.applications import VGG19, vgg19, resnet, inception_resnet_v2, xception, Xception
 
 
-def vgg19_feature_extractor(img, img_size=224, unfreez_convtop_n=0):
+def vgg19_siamese(img, img_size=224, unfreez_convtop_n=0):
     """
 
     :param name:
