@@ -14,7 +14,8 @@ from kerastuner import HyperParameters
 from train_test import simple_training
 
 # data preparation------------------------------------------------------------------------------------------------------
-train_data_dir = r"D:\Zhewen\PerceptoX\data\datasets\train_data"
+# train_data_dir = r"D:\Zhewen\PerceptoX\data\datasets\train_data"
+train_data_dir = r"E:\thesis MSc Geography\PerceptoX\data\datasets\train_data"
 x_left_training = np.load(os.path.join(train_data_dir, "train_left_duel_1.npy"), allow_pickle=True)
 x_right_training = np.load(os.path.join(train_data_dir, "train_right_duel_1.npy"), allow_pickle=True)
 y_training = np.load(os.path.join(train_data_dir, "train_label_duel_1.npy"), allow_pickle=True)
