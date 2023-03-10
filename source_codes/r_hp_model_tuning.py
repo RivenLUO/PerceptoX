@@ -30,10 +30,12 @@ x_val = [x_left_val, x_right_val]
 y_train, y_val = y_training[0:4000], y_training[4000:5000]
 
 # number of class is 3 : left, right, no reference y.shape=(5780,2)
-hypermodel = hp_models.SiameseHyperModelVgg19(num_classes=2)
+# hypermodel = hp_models.SiameseHyperModelVgg19(num_classes=2)
+hypermodel = hp_models.SiameseHyperModelVgg16(num_classes=2)
+# hypermodel = hp_models.SiameseHyperModelXception(num_classes=2)
 
 save_dir = r"D:\Zhewen\PerceptoX\results"
-save_best_hp_dir = "hp_results_Q1_1"
+save_best_hp_dir = "hp_results_Q1_2"
 
 tuner = kt.BayesianOptimization(
     hypermodel,
